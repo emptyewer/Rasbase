@@ -1,0 +1,39 @@
+<!-- Modal User Profile -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 350px;">
+        <div class="modal-content">
+{#            <div class="modal-header">#}
+{#                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>#}
+{#                <h4 class="modal-title" id="myModalLabel">User Profile</h4>#}
+{#                </div>#}
+            <div class="modal-body" style="margin: auto; display: block; width: 90%;">
+                <img src="{{ user.submitter.image.url }}" name="aboutme" width="140" height="140" border="0" class="img-circle" style="margin: auto; display: block;"></a>
+                <br>
+                <h4 class="media-heading" style="padding-top: 10px; margin: auto; display: block;">{{ user.first_name }} {{ user.last_name }}<br>
+                <small>{{ user.submitter.department }}</small><br><small>{{ user.submitter.university }}</small></h4>
+            <br>
+                <span><strong>Baits: </strong></span>
+                {% if user.submitter.is_omniscient %}
+                    <span class="label label-success">All</span>
+                {% else %}
+                    {% for bait in user.submitter.get_allowed_baits %}
+                        <span class="label label-success">{{ bait }}</span>
+                    {% endfor %}
+                {% endif %}
+            <br>
+                <span><strong>Vectors: </strong></span>
+                {% if user.submitter.is_omniscient %}
+                    <span class="label label-danger">All</span>
+                {% else %}
+                     {% for vector in user.submitter.get_allowed_vectors %}
+                        <span class="label label-default">{{ vector }}</span>
+                    {% endfor %}
+                {% endif %}
+{#                <p class="text-left"><strong>Bio: </strong><br>#}
+{#                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sem dui, tempor sit amet commodo a, vulputate vel tellus.</p>#}
+{#                <br>#}
+            </div>
+
+        </div>
+    </div>
+</div>

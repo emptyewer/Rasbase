@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Upload files {% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+{% block javascript %}
+  <script src='{% static 'js/bootstrap/bootstrap-filestyle.min.js' %}'></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container" id="upload-view">
+      <div class="panel panel-default" style="margin-bottom: 20px; margin-top: 20px">
+          <div class="panel-heading">
+              <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">Upload Instructions</a>
+              </h4>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+              <div class="panel-body">
+                  Drag and drop the .json output from Stat Maker.app. These files are stored in "stat_maker_output" folder within the main working directory of DEEPN analysis workflow. If you do not find .json extension files or the "stat_maker_output" folder, this means you are using an older version of Stat Maker.app (less than version 2.63). Please download the latest version from the <a href="https://github.com/emptyewer/DEEPN/releases" target="_blank">GitHub page</a>.
+                <br>
+                <br>
+                <p class="text-danger">Please note that <b>bait</b> and <b>vector</b> data can be submitted only once. Once submitted you will no longer be able to reupload the same bait/vector data. Please verify if the filenames before submission. </p>
+              </div>
+          </div>
+      </div>
+      <div class="progress" id="pbar">
+        <div class="indeterminate"></div>
+      </div>
+      <form action="{% url 'rasbase-upload' %}" id="upload-form" method="POST">{% csrf_token %}
+        {% if baits|length > 0 %}
+          <div class="col-lg-6" >
+          <h4>Baits</h4>
+          {% for bait in baits %}
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    {{ bait }}
+                </div>
+                <div class="panel-body">
+                   <input type="file"  id='_bait{{ forloop.counter }}' class="filestyle" data-placeholder="No file" name="{{ bait }}" accept=".json">
+                </div>
+            </div>
+          {% endfor %}
+          </div>
+        {% endif %}
+        {% if vectors|length > 0 %}
+          <div class="col-lg-6">
+          <h4>Vectors</h4>
+          {% for vector in vectors %}
+            <div class="panel panel-warning">
+                <div class="panel-heading">
+                    {{ vector }}
+                </div>
+                <div class="panel-body">
+                   <input type="file"  id='_vector{{ forloop.counter }}' class="filestyle" data-placeholder="No file" name="{{ vector }}" accept=".json">
+                </div>
+            </div>
+          {% endfor %}
+          </div>
+        {% endif %}
+        <div class="col-lg-12">
+            <input id="_submit" type="submit" class="btn btn-success"  style="margin-bottom: 20px" value="Upload for Approval">
+          <div class="panel panel-default" style="margin-bottom: 20px; margin-top: 20px">
+            <div class="panel-heading">
+              <b>{{ user.first_name }} {{ user.last_name }}</b> from <b>{{ user.submitter.university }}</b>, working on <b>{{ user.submitter.project_name }}</b> project.
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="container" id="success-notification">
+      <div class="panel panel-green" style="margin-top: 20px">
+        <div class="panel-heading">
+            Upload Finished!
+        </div>
+        <div class="panel-body">
+          <p>Your experiment <b>{{ experiment }}</b> upload has finished successfully. Your data is currently in queue to be validated. This process will take up to a week. When accepted your data will appear in appropriate section of search tables. </p>
+        </div>
+        <div class="panel-footer">
+          <a type="button" class="btn btn-outline btn-success" href="{% url 'rasbase-dashboard' %}">Return to Dashboard</a>
+          <a type="button" class="btn btn-outline btn-default" href="{% url 'rasbase-upload' %}">Return to Upload</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h4 class="modal-title" id="myModalLabel">Invalid Submission</h4>
+              </div>
+              <div class="modal-body">
+                <p class="text-danger">Please fill out the highlighted fields and try again.</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Dismiss</button>
+              </div>
+          </div>
+          <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+
+{% endblock %}
+
+{% block end_javascript %}
+  <script>
+    var csrftoken = '{{ csrf_token }}';
+    var genomes = '{% for genome in genomes %} <option>{{ genome }}</option> {% endfor %}'
+    var preys = '{% for library in libraries %} <option>{{ library }}</option> {% endfor %}'
+    var vectors = '{% for vec in all_vectors %} <option>{{ vec }}</option> {% endfor %}'
+  </script>
+  <script src='{% static 'js/dragdrop/user.js' %}'></script>
+{% endblock %}

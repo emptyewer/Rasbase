@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <h4 class="page-header">Pending Uploads <span class="badge">{{ request.session.pending }}</span></h4>
+  {% for key,upload in uploads.items %}
+    <div class="col-lg-12">
+        <div class="panel panel-default row">
+            <div class="panel-heading">
+                <ul class="list-inline">
+                  <li><h4>User: <small>{{ upload.user.first_name }} {{ upload.user.last_name }}</small>
+                  </h4></li>
+                  <li><h4>University: <small>{{ upload.user.submitter.department }}, {{ upload.user.submitter.university }}</small></h4></li>
+                  <li><h4>Project: <small>{{ upload.user.submitter.project_name }}</small></h4></li>
+                  <li class="text-right"><small>Upload Date: {{ upload.date }}</small></li>
+                </ul>
+            </div>
+            <!-- .panel-heading -->
+      <div class="panel-body">
+          <div class="panel-group" id="accordion">
+      {% for file in upload.files %}
+        {% if file.type == 'B' %}
+          <div class="panel panel-info">
+          <div class="panel-heading">
+              <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ file.id }}" aria-expanded="false" class="collapsed">{{ file.bait.name }}</a>
+              </h4>
+          </div>
+        {% else %}
+          <div class="panel panel-warning">
+          <div class="panel-heading">
+              <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ file.id }}" aria-expanded="false" class="collapsed">{{ file.vector.name }}</a>
+              </h4>
+          </div>
+        {% endif %}
+
+          <div id="collapse{{ file.id }}" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+              <div class="panel-body">
+                <ul class="list-inline">
+                    <li><h4>
+                      Genome Index: <small>{{ file.indexed_genome }}</small>
+                    </h4></li>
+                    <li><h4>
+                      DEEPN Prey Library: <small>{{ file.prey_library }}</small>
+                    </h4></li>
+                  {% if file.type == 'B' %}
+                    <li><h4>
+                      Vector: <small>{{ file.vector.name }}</small>
+                    </h4><li>
+                  {% endif %}
+                  <li>      </li>
+                  <li><button type="button" class="btn btn-outline btn-success">Accept</button><li>
+                  <li><button type="button" class="btn btn-outline btn-danger">Reject</button><li>
+                </ul>
+
+                  {% if file.type == 'B' %}
+                    {% include "upload/pending_bait.html" %}
+                  {% else %}
+                  {% endif %}
+                </div>
+          </div>
+          </div>
+        </div>
+      {% endfor %}
+              </div>
+            </div>
+            <!-- .panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block end_javascript %}
+  <!-- DataTables JavaScript -->
+  <script src="{% static "js/datatables/datatables/js/jquery.dataTables.min.js" %}"></script>
+  <script src="{% static "js/datatables/datatables-plugins/dataTables.bootstrap.min.js" %}"></script>
+  <script src="{% static "js/datatables/datatables-responsive/dataTables.responsive.js" %}"></script>
+{% endblock %}
+

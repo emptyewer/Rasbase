@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+<script src="{% static "js/scripts.js" %}"></script>
+{% block content %}
+    {% if error == 0 %}
+    <div class="panel panel-green" style="margin-top: 20px">
+      <div class="panel-heading">
+          Upload Finished!
+      </div>
+    {% else %}
+    <div class="panel panel-danger" style="margin-top: 20px">
+      <div class="panel-heading">
+          Upload Error!
+      </div>
+    {% endif %}
+
+        <div class="panel-body">
+          {% if error == 0 %}
+          <p>The experiment <b>{{ experiment }}</b> upload has finished successfully. Your data is currently in queue to be validated. This process will take up to a week. When accepted your data will appear in appropriate section of search tables. </p>
+          {% else %}
+          <p>An error was encountered while uploading experiment <b>{{ experiment }}</b>. The error message reads <b>{{ error }}</b></p>
+          {% endif %}
+        </div>
+        <div class="panel-footer">
+          {% if error == 0 %}
+          <a type="button" class="btn btn-outline btn-success" href="{% url 'rasbase-dashboard' %}">Return to Dashboard</a>
+          <a type="button" class="btn btn-outline btn-default" href="{% url 'rasbase-upload' %}">Upload Another...</a>
+          {% else %}
+          <a type="button" class="btn btn-outline btn-default" href="{% url 'rasbase-dashboard' %}">Return to Dashboard</a>
+          <a type="button" class="btn btn-outline btn-danger" href="{% url 'rasbase-upload' %}">Try Again</a>
+          {% endif %}
+        </div>
+    </div>
+{% endblock %}
+

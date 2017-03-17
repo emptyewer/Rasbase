@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Upload Bait File {% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+{% block content %}
+{#  <h4 class="page-header">Uploader</h4>#}
+  <div style="margin-bottom: 20px; padding-top: 20px">
+
+    <div class="alert" id="topalert">
+    </div>
+    <div class="progress" id="pbar">
+        <div class="indeterminate"></div>
+    </div>
+    <div id="drop_well" class="well text-muted text-center" style="width: 60%; position: relative; padding-bottom: 50px; left:20%; padding-top: 50px">
+          <span id="drop_well_icon" class="fa fa-upload" style="font-size: 4rem;"></span>
+          <h3>Drop Stat Maker Bait .json File</h3>
+    </div>
+{#    <input id="fileupload" type="file" name="file" multiple#}
+{#       style="display: none;"#}
+{#       data-url="{% url 'rasbase-upload' %}"#}
+{#       data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>#}
+  </div>
+
+  <div id="import-table-well" class="panel panel-default">
+    <div id="import-table-header" class="panel-heading">
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#enrichment" data-toggle="tab" aria-expanded="true">Enrichment</a>
+            </li>
+            <li class=""><a href="#bait" data-toggle="tab" aria-expanded="false">Bait Junctions</a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="enrichment" style="padding-top: 20px">
+                <table width="100%" class="table table-striped table-hover" id="import-table">
+                  <thead>
+                      <tr>
+                          <th>Gene Name</th>
+                          <th>Base (ppm)</th>
+                          <th>Vector (ppm)</th>
+                          <th>Bait (ppm)</th>
+                          <th>Enrichment</th>
+                          <th>p-Value</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              <!-- /.table-responsive -->
+            </div>
+            <div class="tab-pane fade" id="bait">
+              <div class="col-lg-6">
+                <div>
+                  <div id="left" style="float: left;">
+                    <h5>Selected</h5>
+                  </div>
+                  <div id="right" class="tooltip-demo">
+                    <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="left" data-content="F/O: In frame/In ORF, U: Upstream, O: In ORF, D: Downstream, F:In frame, B: Backwards" data-original-title="Terms" style="border: none; background: none;" ><i class="fa fa-question-circle"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <table width="100%" class="table table-striped table-hover" id="bait-sel-junctions-table">
+                  <thead>
+                      <tr>
+                          <th>Gene</th>
+                          <th>F/O</th>
+                          <th>U</th>
+                          <th>O</th>
+                          <th>D</th>
+                          <th>F</th>
+                          <th>B</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-lg-6">
+                <div>
+                  <div id="left" style="float: left;">
+                  <h5>Non-Selected</h5>
+                  </div>
+                  <div id="right" class="tooltip-demo">
+                    <button type="button" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="left" data-content="F/O: In frame/In ORF, U: Upstream, O: In ORF, D: Downstream, F:In frame, B: Backwards" data-original-title="Terms" style="border: none; background: none;" ><i class="fa fa-question-circle"></i>
+                    </button>
+                  </div>
+                </div>
+                <table width="100%" class="table table-striped table-hover" id="bait-nonsel-junctions-table">
+                  <thead>
+                      <tr>
+                          <th>Gene</th>
+                          <th>F/O</th>
+                          <th>U</th>
+                          <th>O</th>
+                          <th>D</th>
+                          <th>F</th>
+                          <th>B</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+
+      <hr>
+      <form id="metadata-form" method="post" style="padding: 10px">{% csrf_token %}
+        <div class="col-lg-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">Experiment Info</div>
+            <div style="padding: 10px">
+              <div class="form-group input-group">
+                  <span class="input-group-addon">Name</span>
+                  <input type="text" class="form-control" id="exp" name="experiment_name">
+              </div>
+              <div class="form-group input-group">
+                <span class="input-group-addon">Genome Index</span>
+                <select class="form-control" id="library" name="indexed_genome">
+                    <option>Select</option>
+                    {% for genome in genomes %}
+                      <option>{{ genome }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <div class="form-group input-group">
+                <span class="input-group-addon">DEEPN Prey Library</span>
+                <select class="form-control" id="reference" name="prey_library">
+                  <option>Select</option>
+                  {% for lib in libraries %}
+                    <option>{{ lib }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <hr>
+              <div class="form-group input-group">
+                <span class="input-group-addon">Bait</span>
+                <select class="form-control" id="bait" name="bait">
+                    <option>Select</option>
+                    {% for bait in baits %}
+                      <option>{{ bait }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <div class="form-group input-group">
+                <span class="input-group-addon">Vector</span>
+                <select class="form-control" id="vector" name="vector">
+                    <option>Select</option>
+                    {% for vector in vectors %}
+                      <option>{{ vector }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+              <div id="hidden-entries">
+
+              </div>
+            </div>
+          </div>
+{#          <div class="panel panel-info">#}
+{#            <div class="panel-heading">Submitter Info</div>#}
+{#            <div style="padding: 10px">#}
+{#              <div class="form-group input-group">#}
+{#                  <span class="input-group-addon">University</span>#}
+{#                  <input type="text" class="form-control" placeholder="name" id="university">#}
+{#              </div>#}
+{#              <div class="form-group input-group">#}
+{#                  <span class="input-group-addon">Submitter</span>#}
+{#                  <input type="text" class="form-control" placeholder="name" id="submitter">#}
+{#              </div>#}
+{#            </div>#}
+{#          </div>#}
+        </div>
+
+        <div class="col-lg-6">
+          <div class="panel panel-info">
+            <div class="panel-heading">File Info</div>
+            <div style="padding: 10px">
+              <dt>Vector Selected</dt>
+              <ul>
+                <li id="vector1s"></li>
+                <li id="vector2s"></li>
+              </ul>
+              <dt>Vector Non-Selected</dt>
+              <ul>
+                <li id="vector1n"></li>
+                <li id="vector2n"></li>
+              </ul>
+              <dt>Bait Selected</dt>
+              <ul>
+                <li id="bait1s"></li>
+              </ul>
+              <dt>Bait Non-Selected</dt>
+              <ul>
+                <li id="bait1n"></li>
+              </ul>
+              <dt>Threshold</dt>
+              <dd id="threshold"></dd>
+            </div>
+          </div>
+        </div>
+      </form>
+      <hr>
+    </div>
+    <!-- /.panel-body -->
+    <button id="approval-button" type="button" class="btn btn-primary" style="width: 30%; position: relative; left:20%; margin-bottom: 20px;">Add to Database</button>
+  <button id="cancel-button" type="button" class="btn btn-danger" style="width: 30%; position: relative; left:20%; margin-bottom: 20px;">Cancel</button>
+  </div>
+
+  <div class="panel panel-default" id="footer-panel" style="width: 50%; position: relative; left:25%;">
+      <div class="panel-heading">
+          <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" class="collapsed">Upload Instructions</a>
+          </h4>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+          <div class="panel-body">
+              Drag and drop the .json output from Stat Maker.app. These files are stored in "stat_maker_output" folder within the main working directory of DEEPN analysis workflow. If you do not find .json extension files or the "stat_maker_output" folder, this means you are using an older version of Stat Maker.app (less than version 2.62). Please download the latest version from the <a href="https://github.com/emptyewer/DEEPN/releases" target="_blank">GitHub page</a>.
+          </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h4 class="modal-title" id="myModalLabel">Invalid Submission</h4>
+              </div>
+              <div class="modal-body">
+                <p class="text-danger">Please fill out the highlighted fields and try again.</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Dismiss</button>
+              </div>
+          </div>
+          <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+  </div>
+{% endblock %}
+
+{% block end_javascript %}
+  <script>
+    // tooltip demo
+    $('.tooltip-demo').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    });
+    // popover demo
+    $("[data-toggle=popover]")
+        .popover()
+    </script>
+  <script src="{% static "js/spinner/jquery.faloading.min.js" %}"></script>
+  <script src="{% static "js/dragdrop/super_bait.js" %}"></script>
+  <script src="{% static "js/validator/validate_submit_upload.js" %}"></script>
+  <!-- DataTables JavaScript -->
+  <script src="{% static "js/datatables/datatables/js/jquery.dataTables.min.js" %}"></script>
+  <script src="{% static "js/datatables/datatables-plugins/dataTables.bootstrap.min.js" %}"></script>
+  <script src="{% static "js/datatables/datatables-responsive/dataTables.responsive.js" %}"></script>
+
+{% endblock %}

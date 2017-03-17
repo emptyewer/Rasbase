@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+<script src="{% static "js/scripts.js" %}"></script>
+{% block content %}
+    <h4 class="page-header">Dashboard</h4>
+{#    {% if user.is_authenticated %}#}
+{#        <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>#}
+{#    {% else %}#}
+{#        <p>Welcome, new user. Please log in.</p>#}
+{#    {% endif %}#}
+    <div class="row" style="margin-left: auto;margin-right: auto; position: relative">
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-glass fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ total }}</div>
+                                    <div>Experiments</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">View Details</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-anchor fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ bait }}</div>
+                                    <div>Baits</div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#">
+                            <div class="panel-footer">
+                                <span class="pull-left">Search</span>
+                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                <div class="clearfix"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="panel panel-yellow">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <i class="fa fa-clock-o fa-5x"></i>
+                                </div>
+                                <div class="col-xs-9 text-right">
+                                    <div class="huge">{{ pending }}</div>
+                                    <div>Pending Uploads</div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if user.submitter.group == "O" %}
+                          <a href="#">
+                              <div class="panel-footer">
+                                  <span class="pull-left">View Details</span>
+                                  <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                  <div class="clearfix"></div>
+                              </div>
+                          </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+{% endblock %}

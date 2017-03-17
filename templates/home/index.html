@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>iSociety</title>
+    {% load static %}
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300|Roboto:300" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <link rel="stylesheet" href="{% static "css/bootstrap/bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static "css/sb-admin/sb-admin-2.css" %}">
+    <link href="{% static "css/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="main_body">
+<div style="text-align: center; padding-top: 100px">
+    <img src="{% static "home/images/fullerene.png" %}" alt="iSociety"/>
+    <br>
+    <div style="font-family: 'Oswald', sans-serif; font-size: 35pt; color: azure">Rasbase</div>
+
+    <div style="padding: 50px"><a href="{% url 'rasbase-dashboard' %}">
+      <button type="button" class="btn btn-default btn-circle btn-xl"><i class="fa fa-arrow-right"></i></button></a>
+    </div>
+
+    <div class="col-lg-4" style="position:absolute; left:33.33%; padding-top: 50px">
+      <hr>
+      <p style="font-family: 'Roboto', sans-serif; font-size: 11pt; color: azure">
+        Rasbase is a database of GTPases from the ras family in both GDP and GTP bound form.
+        The data was generated from DEEPN bioinformatics workflow to identify protein-protein interactions
+        from yeast-2-hybrid screens.
+        <a href="https://github.com/emptyewer/DEEPN/releases" style="color: azure">Read more...</a>
+      </p>
+    </div>
+</div>
+
+</body>
+</html>

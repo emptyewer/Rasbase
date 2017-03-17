@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheet %}
+  <!-- DataTables CSS -->
+  <link href="{% static "css/login/style.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+{#  <h2>Login</h2>#}
+{#  <form method="post">#}
+{#    {% csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#    <button type="submit">Login</button>#}
+{#  </form>#}
+
+  <div class="container" style="padding-top: 80px">
+    <div class="card"></div>
+    <div class="card">
+      <h1 class="title">Login</h1>
+      <form  role="form" method="post">
+        {% csrf_token %}
+        <div class="input-container">
+          <input required="required" name="username"/>
+          <label for="username">Username</label>
+          <div class="bar"></div>
+        </div>
+        <div class="input-container">
+          <input type="password" name = "password" required="required"/>
+          <label for="password">Password</label>
+          <div class="bar"></div>
+        </div>
+        <div class="button-container">
+          <button type="submit" ><span>Go</span></button>
+        </div>
+      </form>
+    </div>
+{#    <div class="card alt" style="padding-top: 80px">#}
+{#      <div class="toggle"></div>#}
+{#      <h1 class="title">Register#}
+{#        <div class="close"></div>#}
+{#      </h1>#}
+{#      <form>#}
+{#        <div class="input-container">#}
+{#          <input type="#{type}" id="#{label}" required="required"/>#}
+{#          <label for="#{label}">Username</label>#}
+{#          <div class="bar"></div>#}
+{#        </div>#}
+{#        <div class="input-container">#}
+{#          <input type="#{type}" id="#{label}" required="required"/>#}
+{#          <label for="#{label}">Password</label>#}
+{#          <div class="bar"></div>#}
+{#        </div>#}
+{#        <div class="input-container">#}
+{#          <input type="#{type}" id="#{label}" required="required"/>#}
+{#          <label for="#{label}">Repeat Password</label>#}
+{#          <div class="bar"></div>#}
+{#        </div>#}
+{#        <div class="button-container">#}
+{#          <button><span>Next</span></button>#}
+{#        </div>#}
+{#      </form>#}
+{#    </div>#}
+  </div>
+
+{#  <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="col-md-3 col-md-offset-3">#}
+{#                <div class="login-panel panel panel-default">#}
+{#                    <div class="panel-heading">#}
+{#                        <h3 class="panel-title">Log In</h3>#}
+{#                    </div>#}
+{#                    <div class="panel-body">#}
+{#                        <form role="form" method="post">#}
+{#                          {% csrf_token %}#}
+{#                          <fieldset>#}
+{#                            <div class="form-group">#}
+{#                                <input class="form-control" placeholder="Username" name="username" autofocus>#}
+{#                            </div>#}
+{#                            <div class="form-group">#}
+{#                                <input class="form-control" placeholder="Password" name="password" type="password" value="">#}
+{#                            </div>#}
+{#                            <!-- Change this to a button or input when using this as a form -->#}
+{#                            <button type="submit" class="btn btn-success btn-block">Login</button>#}
+{#                          </fieldset>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}
+
+{% block end_javascript %}
+  <script src="{% static "js/login/login.js" %}"></script>
+{% endblock %}

@@ -1,0 +1,89 @@
+<!-- /.navbar-header -->
+<div class="navbar-header ">
+    <ul>
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <i class="fa fa-home fa-fw"></i>iSociety
+        </a>
+
+    </ul>
+</div>
+
+<ul class="nav navbar-top-links navbar-right ">
+    {% if user.is_authenticated %}
+      {% if user.submitter.is_omniscient %}
+        <li>
+          <a href="{% url 'rasbase-messages' %}" class="ui-state-hover">
+            <i class="fa fa-envelope fa-fw" style="color: #777"></i>
+             <span class="badge">{{ request.session.pending }}</span>
+          </a>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="fa fa-upload fa-fw" style="color: #777"></i> <i class="fa fa-caret-down" style="color: #777"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-alerts">
+              <li>
+                  <a href="{% url 'rasbase-upload' %}?upload_type=bait">
+                      <div>
+                          <i class="fa fa-file-text fa-fw"></i> Upload Bait Data
+                          <span class="pull-right text-muted small">json format</span>
+                      </div>
+                  </a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                  <a href="{% url 'rasbase-upload' %}?upload_type=vector">
+                      <div>
+                          <i class="fa fa-file-text fa-fw"></i> Upload Vector Data
+                          <span class="pull-right text-muted small">json format</span>
+                      </div>
+                  </a>
+              </li>
+          </ul>
+          <!-- /.dropdown-alerts -->
+        </li>
+      {% else %}
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              <i class="fa fa-upload fa-fw" style="color: #777"></i> <i class="fa fa-caret-down" style="color: #777"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-alerts">
+              <li>
+                  <a href="{% url 'rasbase-upload' %}">
+                      <div>
+                          <i class="fa fa-file-text fa-fw"></i> Upload Data
+                          <span class="pull-right text-muted small">json format</span>
+                      </div>
+                  </a>
+              </li>
+          </ul>
+        </li>
+      {% endif %}
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+            <i class="fa fa-user fa-fw" style="color: #777"></i><i class="fa fa-caret-down" style="color: #777"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+            <li><a href="#aboutModal" data-toggle="modal" data-target="#myModal"><i class="fa fa-user fa-fw"></i> Profile</a>
+            </li>
+            <li class="divider"></li>
+            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            </li>
+        </ul>
+        <!-- /.dropdown-user -->
+      </li>
+    {% else %}
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+            <i class="fa fa-user fa-fw" style="color: #777"></i> <i class="fa fa-caret-down" style="color: #777"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+            <li><a href="{% url 'login' %}"><i class="fa fa-sign-in"></i> Login</a>
+            </li>
+        </ul>
+        <!-- /.dropdown-user -->
+      </li>
+    {% endif %}
+</ul>
+
+

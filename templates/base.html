@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>iSociety - {% block title %} Homepage{% endblock %}</title>
+
+    <!-- Bootstrap Core CSS -->
+     <link rel="stylesheet" href="{% static "css/bootstrap/bootstrap.css" %}">
+
+    <!-- MetisMenu CSS -->
+    <link rel="stylesheet" href="{% static "css/metis/metisMenu.min.css" %}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static "css/sb-admin/sb-admin-2.css" %}">
+
+    {% block stylesheet %}
+    {% endblock %}
+
+    <!-- Custom Fonts -->
+    <link href="{% static "css/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+
+    <!-- jQuery -->
+    <script src="{% static "js/jquery/jquery.min.js" %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "js/bootstrap/bootstrap.min.js" %}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{% static "js/metis/metisMenu.min.js" %}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static "js/sb-admin/sb-admin-2.js" %}"></script>
+
+    {% block javascript %}
+    {% endblock %}
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            {% include "nav-header.html" %}
+            {%  include "nav-side.html" %}
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+            </div>
+            {% include "user_profile.html" %}
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+{#{%  include "footer.html" %}#}
+{% block end_javascript %}
+{% endblock %}
+</body>
+
+</html>
