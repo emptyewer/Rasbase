@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs">
     <li class="active"><a href="#enrichment{{ file.id }}" data-toggle="tab" aria-expanded="true">Enrichment</a>
     </li>
-    <li class=""><a href="#bait{{ file.id }}" data-toggle="tab" aria-expanded="false">Bait Junctions</a>
+    <li class=""><a id="junction-header{{ file.id }}" href="#bait{{ file.id }}" data-toggle="tab" aria-expanded="false">Bait Junctions</a>
     </li>
     <li class=""><a href="#gene{{ file.id }}" data-toggle="tab" aria-expanded="false">Bait Gene Sequence</a>
     </li>
@@ -85,79 +85,89 @@
     <pre>{{ file.bait.get_formatted_protein_sequence }}</pre>
   </div>
 <script>
-  $(document).ready(function() {
-    $('#statmaker{{ file.id }}').DataTable( {
-        "ajax": {
-          "url": "{{ file.file.url }}",
-          "dataSrc": "genes"
-        },
-        "formatNumber": function ( toFormat ) {
-          return toFormat.toString().replace(
-            /\B(?=(\d{3})+(?!\d))/g, "'"
-          );
-        },
-        "columns": [
-            { "data": "name" },
-            { "data": "stats.0",
-              "render": $.fn.dataTable.render.number( ',', '.', 2)
+  $("#junction-header{{ file.id }}").click(function () {
+      if ( !$.fn.DataTable.isDataTable('#bait-nonsel{{ file.id }}')) {
+        $('#bait-nonsel{{ file.id }}').DataTable({
+          "ajax": {
+            "url": "{{ file.file.url }}",
+            "dataSrc": "genes"
+          },
+          "columns": [
+            {"data": "non_selected.junction_stats.0"},
+            {"data": "non_selected.junction_stats.1"},
+            {"data": "non_selected.junction_stats.2"},
+            {"data": "non_selected.junction_stats.3"},
+            {"data": "non_selected.junction_stats.4"},
+            {"data": "non_selected.junction_stats.5"},
+            {"data": "non_selected.junction_stats.6"}
+          ],
+          "lengthChange": false,
+          "info": false,
+          "pagingType": "simple",
+          "searching": false,
+          "ordering": false
+        });
+        $('#bait-nonsel{{ file.id }}_paginate').addClass('text-right');
+        $('#bait-sel{{ file.id }}').DataTable({
+          "ajax": {
+            "url": "{{ file.file.url }}",
+            "dataSrc": "genes"
+          },
+          "columns": [
+            {"data": "selected.junction_stats.0"},
+            {"data": "selected.junction_stats.1"},
+            {"data": "selected.junction_stats.2"},
+            {"data": "selected.junction_stats.3"},
+            {"data": "selected.junction_stats.4"},
+            {"data": "selected.junction_stats.5"},
+            {"data": "selected.junction_stats.6"}
+          ],
+          "lengthChange": false,
+          "info": false,
+          "pagingType": "simple",
+          "searching": false,
+          "ordering": false
+        });
+        $('#bait-sel{{ file.id }}_paginate').addClass('text-right');
+      }
+    });
+
+    $("#table_header{{ file.id }}").click(function () {
+      if ( ! $.fn.DataTable.isDataTable('#statmaker{{ file.id }}') ) {
+        $('#statmaker{{ file.id }}').DataTable({
+          "ajax": {
+            "url": "{{ file.file.url }}",
+            "dataSrc": "genes"
+          },
+          "formatNumber": function (toFormat) {
+            return toFormat.toString().replace(
+              /\B(?=(\d{3})+(?!\d))/g, "'"
+            );
+          },
+          "columns": [
+            {"data": "name"},
+            {
+              "data": "stats.0",
+              "render": $.fn.dataTable.render.number(',', '.', 2)
             },
-            { "data": "stats.1",
-              "render": $.fn.dataTable.render.number( ',', '.', 2)
+            {
+              "data": "stats.1",
+              "render": $.fn.dataTable.render.number(',', '.', 2)
             },
-            { "data": "stats.2",
-              "render": $.fn.dataTable.render.number( ',', '.', 2)
+            {
+              "data": "stats.2",
+              "render": $.fn.dataTable.render.number(',', '.', 2)
             },
-            { "data": "stats.3",
-              "render": $.fn.dataTable.render.number( ',', '.', 2)
+            {
+              "data": "stats.3",
+              "render": $.fn.dataTable.render.number(',', '.', 2)
             },
-            { "data": "stats.5"}
-        ],
-        "order": [[ 5, 'dsc' ]],
-        "responsive": true
-    } );
-    $('#statmaker{{ file.id }}_paginate').addClass('text-right');
-    $('#statmaker{{ file.id }}_filter').addClass('text-right');
-    $('#bait-nonsel{{ file.id }}').DataTable( {
-        "ajax": {
-          "url": "{{ file.file.url }}",
-          "dataSrc": "genes"
-        },
-        "columns": [
-            { "data": "non_selected.junction_stats.0" },
-            { "data": "non_selected.junction_stats.1" },
-            { "data": "non_selected.junction_stats.2" },
-            { "data": "non_selected.junction_stats.3" },
-            { "data": "non_selected.junction_stats.4" },
-            { "data": "non_selected.junction_stats.5" },
-            { "data": "non_selected.junction_stats.6" }
-        ],
-        "lengthChange": false,
-        "info": false,
-        "pagingType": "simple",
-        "searching": false,
-        "ordering": false
-    } );
-    $('#bait-nonsel{{ file.id }}_paginate').addClass('text-right');
-    $('#bait-sel{{ file.id }}').DataTable( {
-        "ajax": {
-          "url": "{{ file.file.url }}",
-          "dataSrc": "genes"
-        },
-        "columns": [
-            { "data": "selected.junction_stats.0" },
-            { "data": "selected.junction_stats.1" },
-            { "data": "selected.junction_stats.2" },
-            { "data": "selected.junction_stats.3" },
-            { "data": "selected.junction_stats.4" },
-            { "data": "selected.junction_stats.5" },
-            { "data": "selected.junction_stats.6" }
-        ],
-        "lengthChange": false,
-        "info": false,
-        "pagingType": "simple",
-        "searching": false,
-        "ordering": false
-    } );
-    $('#bait-sel{{ file.id }}_paginate').addClass('text-right');
-  } );
+            {"data": "stats.5"}
+          ],
+          "order": [[5, 'dsc']],
+        });
+        $('#statmaker{{ file.id }}_paginate').addClass('text-right');
+        $('#statmaker{{ file.id }}_filter').addClass('text-right');
+      }
+    });
 </script>

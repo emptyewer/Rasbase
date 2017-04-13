@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block javascript %}
+  <!-- DataTables JavaScript -->
+  <script src="{% static "js/datatables/datatables/js/jquery.dataTables.min.js" %}"></script>
+  <script src="{% static "js/datatables/datatables-plugins/dataTables.bootstrap.min.js" %}"></script>
+  <script src="{% static "js/datatables/datatables-responsive/dataTables.responsive.js" %}"></script>
+{% endblock %}
+
 {% block content %}
   <h4 class="page-header">Pending Uploads <span class="badge">{{ request.session.pending }}</span></h4>
   {% for key,upload in uploads.items %}
@@ -22,14 +30,14 @@
           <div class="panel panel-info">
           <div class="panel-heading">
               <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ file.id }}" aria-expanded="false" class="collapsed">{{ file.bait.name }}</a>
+                  <a id="table_header{{ file.id }}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ file.id }}" aria-expanded="false" class="collapsed">{{ file.bait.name }}</a>
               </h4>
           </div>
         {% else %}
           <div class="panel panel-warning">
           <div class="panel-heading">
               <h4 class="panel-title">
-                  <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ file.id }}" aria-expanded="false" class="collapsed">{{ file.vector.name }}</a>
+                  <a id="table_header{{ file.id }}" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ file.id }}" aria-expanded="false" class="collapsed">{{ file.vector.name }}</a>
               </h4>
           </div>
         {% endif %}
@@ -73,9 +81,6 @@
 {% endblock %}
 
 {% block end_javascript %}
-  <!-- DataTables JavaScript -->
-  <script src="{% static "js/datatables/datatables/js/jquery.dataTables.min.js" %}"></script>
-  <script src="{% static "js/datatables/datatables-plugins/dataTables.bootstrap.min.js" %}"></script>
-  <script src="{% static "js/datatables/datatables-responsive/dataTables.responsive.js" %}"></script>
+
 {% endblock %}
 
